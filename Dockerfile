@@ -7,8 +7,11 @@ WORKDIR /app
 # Copiar el código fuente al contenedor
 COPY . .
 
+# Otorgar permisos de ejecución a mvnw
+RUN chmod +x mvnw
+
 # Construir el proyecto con Maven
 RUN ./mvnw clean package -DskipTests
 
-# Copiar el archivo JAR generado y ejecutarlo
+# Ejecutar la aplicación
 CMD ["java", "-jar", "$(ls target/*.jar | head -n 1)"]
