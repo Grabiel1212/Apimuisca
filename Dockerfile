@@ -4,8 +4,11 @@ FROM openjdk:17
 # Crear un directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copiar el archivo JAR de la carpeta target al contenedor
-COPY target/*.jar app.jar
+# Copiar el código fuente al contenedor
+COPY . .
 
-# Comando para ejecutar la aplicación
-CMD ["java", "-jar", "app.jar"]
+# Construir el proyecto con Maven
+RUN ./mvnw clean package -DskipTests
+
+# Copiar el archivo JAR generado y ejecutarlo
+CMD ["java", "-jar", "$(ls target/*.jar | head -n 1)"]
